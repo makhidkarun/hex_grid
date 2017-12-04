@@ -99,7 +99,7 @@ def hexes_within_range(hhex, dist, fmt='offset'):
     if fmt not in ['offset', 'cubic']:
         raise ValueError('format must be "offset" or "cubic"')
     hexes = []
-    h_centre = hhex
+    h_centre = Hex(hhex)
     for dx in range(-dist, dist + 1):
         for dy in range(-dist, dist + 1):
             for dz in range(-dist, dist + 1):
