@@ -11,9 +11,14 @@ Requirements
 Status
 ------
 
-Project code is hosted on GitHub as part of the Makhidkarun collection.
+Project code is hosted on GitHub_ as part of the Makhidkarun collection.
 
-CI testing in progress; expect to see status report here.
+.. _GitHub: https://github.com/makhidkarun/hex_grid
+
+.. image:: https://travis-ci.org/makhidkarun/hex_grid.svg?branch=master
+    :target: https://travis-ci.org/makhidkarun/hex_grid
+
+
 
 Usage
 -----
