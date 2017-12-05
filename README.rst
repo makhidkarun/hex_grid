@@ -6,7 +6,9 @@ This module provides class(es) and methods for manipulating hex grids (e.g. subs
 Requirements
 ------------
 
-* Python 2.7 (Python 3.5 in progress)
+* Python 2.7
+* Python 3.5
+* Python 3.6
 
 Status
 ------

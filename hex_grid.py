@@ -69,13 +69,13 @@ class Hex(object):
     def offset_to_cube(self):
         '''Generate cubic co-ords from offset co-ords'''
         self.x = self.col
-        self.z = self.row - (self.col + (self.col & 1)) / 2
+        self.z = int(self.row - (self.col + (self.col & 1)) / 2)
         self.y = -self.x - self.z
 
     def cube_to_offset(self):
         '''Generate offset co-ords from cubic co-ords'''
         self.col = self.x
-        self.row = self.z + (self.x + (self.x & 1)) / 2
+        self.row = int(self.z + (self.x + (self.x & 1)) / 2)
 
 
 def distance(h1, h2):
