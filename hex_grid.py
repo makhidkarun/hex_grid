@@ -9,6 +9,7 @@ class Hex(object):
     - Hex(ColRow) where ColRow is string in range '0000'-'9999'
     - Hex((x, y, z)) where (x, y, z) is tuple and x, y, z are integers
     '''
+
     def __init__(self, value="0000"):
         self.row = 0
         self.col = 0
