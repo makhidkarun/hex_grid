@@ -158,3 +158,26 @@ def hexes_within_range(hhex, dist, fmt='offset'):
                     else:
                         hexes.append(found_hex.cube())
     return sorted(hexes)
+
+
+def hexes_at_range(hhex, dist, fmt="offset"):
+    '''
+    Return a list of hexes at range dist of hhex
+    - hhex = offset or cubic co-ords or Hex object
+    - dist = int distance
+    - fmt = 'offset' or 'cubic' - specifies output format
+    '''
+    if fmt not in ['offset', 'cubic']:
+        raise ValueError('format must be "offset" or "cubic"')
+    hexes = []
+    h_centre = Hex(hhex)
+
+    h_next = h_centre.neighbour(4) * dist
+    for direction in range(0, 6):
+        for j in range(0, dist):
+            if fmt == 'offset':
+                hexes.append(h_next.offset())
+            else:
+                hexes.append(h_next.cube())
+            h_next = h_next.neighbour(direction)
+    return sorted(hexes)

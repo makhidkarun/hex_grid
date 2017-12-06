@@ -225,3 +225,13 @@ class TestHexesWithinRange(unittest.TestCase):
         self.assertTrue(
             hex_grid.hexes_within_range(Hex('2311'), 1, 'offset') ==
             ['2210', '2211', '2310', '2311', '2312', '2410', '2411'])
+
+
+class TestHexesAtRange(unittest.TestCase):
+    '''Test hexes at range'''
+
+    def test_hexes_at_range_offset(self):
+        '''Test hexes at range (offset co-ords)'''
+        self.assertTrue(
+            hex_grid.hexes_at_range('0202', 1, 'offset') ==
+            ['0102', '0103', '0201', '0203', '0302', '0303'])
