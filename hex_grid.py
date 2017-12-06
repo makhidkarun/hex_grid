@@ -16,6 +16,9 @@ class Hex(object):
         self.x = 0
         self.y = 0
         self.z = 0
+        self.__directions = [
+            ((0, 1, -1)), ((-1, 1, 0)), ((-1, 0, 1)),
+            ((0, -1, 1)), ((1, -1, 0)), ((1, 0, -1))]
 
         # Check input
         if isinstance(value, Hex):
@@ -44,6 +47,7 @@ class Hex(object):
                 self.x = value[0]
                 self.y = value[1]
                 self.z = value[2]
+                assert (self.x + self.y + self.z == 0), 'Invalid co-ordinates'
                 self.cube_to_offset()
             else:
                 raise ValueError(
@@ -72,11 +76,53 @@ class Hex(object):
         self.x = self.col
         self.z = int(self.row - (self.col + (self.col & 1)) / 2)
         self.y = -self.x - self.z
+        assert (self.x + self.y + self.z == 0), 'Invalid co-ordinates'
 
     def cube_to_offset(self):
         '''Generate offset co-ords from cubic co-ords'''
         self.col = self.x
         self.row = int(self.z + (self.x + (self.x & 1)) / 2)
+
+    def neighbour(self, direction):
+        '''
+        Generate neighbour hex in direction d
+        Directions:
+           0
+        1     5
+           C
+        2     4
+           3
+        '''
+        assert (isinstance(direction, int)), 'Direction must be integer'
+        assert (direction in range(0, 6)), \
+            'Invalid direction {}'.format(direction)
+        return Hex((
+            self.x + self.__directions[direction][0],
+            self.y + self.__directions[direction][1],
+            self.z + self.__directions[direction][2]))
+
+    def __eq__(self, other):
+        assert (isinstance(other, Hex)), 'Can only add Hex to Hex'
+        return self.x == other.x and self.y == other.y and self.z == other.z
+
+    def __ne__(self, other):
+        assert (isinstance(other, Hex)), 'Can only add Hex to Hex'
+        return self.x != other.x or self.y != other.y or self.z != other.z
+
+    def __add__(self, other):
+        '''Add hex to hex (vector add)'''
+        assert (isinstance(other, Hex)), 'Can only add Hex to Hex'
+        return Hex((self.x + other.x, self.y + other.y, self.z + other.z))
+
+    def __sub__(self, other):
+        '''Subtract hex from hex (vector subtract)'''
+        assert (isinstance(other, Hex)), 'Can only subtract Hex from Hex'
+        return Hex((self.x - other.x, self.y - other.y, self.z - other.z))
+
+    def __mul__(self, mult):
+        '''Multiply hex vector by int'''
+        assert (isinstance(mult, int)), 'Can only multiply by integer'
+        return Hex((self.x * mult, self.y * mult, self.z * mult))
 
 
 def distance(h1, h2):
