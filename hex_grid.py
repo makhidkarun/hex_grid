@@ -112,6 +112,22 @@ class Hex(object):
             neighbours.append(self.neighbour(direction))
         return sorted(neighbours)
 
+    def neighbours_offset(self):
+        '''Return all neighbour hexes (offset format)'''
+        neighbours = []
+        _ = self.neighbours()
+        for hhex in _:
+            neighbours.append(hhex.offset())
+        return sorted(neighbours)
+
+    def neighbours_cube(self):
+        '''Return all neighbour hexes (cube format)'''
+        neighbours = []
+        _ = self.neighbours()
+        for hhex in _:
+            neighbours.append(hhex.cube())
+        return sorted(neighbours)
+
     def __eq__(self, other):
         assert (isinstance(other, Hex)), 'Can only compare Hex to Hex'
         return self.x == other.x and self.y == other.y and self.z == other.z

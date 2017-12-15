@@ -266,8 +266,21 @@ class TestHexNeighbours(unittest.TestCase):
         neighbours = [
             Hex('0201'), Hex('0102'), Hex('0103'),
             Hex('0203'), Hex('0303'), Hex('0302')]
-        print(hcen.neighbours())
         self.assertTrue(hcen.neighbours() == sorted(neighbours))
+
+    def test_hex_neighbours_offset(self):
+        '''Test hex neighbours method (offset format)'''
+        hcen = Hex('0303')
+        neighbours = ['0202', '0203', '0302', '0304', '0402', '0403']
+        self.assertTrue(hcen.neighbours_offset() == sorted(neighbours))
+
+    def test_hex_neighbours_cube(self):
+        '''Test hex neighbours method (offset format)'''
+        hcen = Hex('0303')
+        neighbours = [
+            (2, -4, 2), (2, -3, 1), (3, -5, 2),
+            (3, -3, 0), (4, -5, 1), (4, -4, 0)]
+        self.assertTrue(hcen.neighbours_cube() == sorted(neighbours))
 
     def test_hex_neighbour_invalid_dir(self):
         '''Test hex neighbour (invalid direction)'''
