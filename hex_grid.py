@@ -1,6 +1,10 @@
 '''hex_grid.py'''
 
 import re
+import logging
+
+LOGGER = logging.getLogger(__name__)
+LOGGER.setLevel(logging.CRITICAL)
 
 
 class Hex(object):
@@ -16,7 +20,7 @@ class Hex(object):
         self.x = 0
         self.y = 0
         self.z = 0
-        self.__directions = [
+        self.directions = [
             ((0, 1, -1)), ((-1, 1, 0)), ((-1, 0, 1)),
             ((0, -1, 1)), ((1, -1, 0)), ((1, 0, -1))]
 
@@ -97,17 +101,40 @@ class Hex(object):
         assert (direction in range(0, 6)), \
             'Invalid direction {}'.format(direction)
         return Hex((
-            self.x + self.__directions[direction][0],
-            self.y + self.__directions[direction][1],
-            self.z + self.__directions[direction][2]))
+            self.x + self.directions[direction][0],
+            self.y + self.directions[direction][1],
+            self.z + self.directions[direction][2]))
+
+    def neighbours(self):
+        '''Return all neighbour hexes'''
+        neighbours = []
+        for direction in range(0, 6):
+            neighbours.append(self.neighbour(direction))
+        return sorted(neighbours)
 
     def __eq__(self, other):
-        assert (isinstance(other, Hex)), 'Can only add Hex to Hex'
+        assert (isinstance(other, Hex)), 'Can only compare Hex to Hex'
         return self.x == other.x and self.y == other.y and self.z == other.z
 
     def __ne__(self, other):
-        assert (isinstance(other, Hex)), 'Can only add Hex to Hex'
+        assert (isinstance(other, Hex)), 'Can only compare Hex to Hex'
         return self.x != other.x or self.y != other.y or self.z != other.z
+
+    def __lt__(self, other):
+        assert (isinstance(other, Hex)), 'Can only compare Hex to Hex'
+        return self.offset() < other.offset()
+
+    def __le__(self, other):
+        assert (isinstance(other, Hex)), 'Can only compare Hex to Hex'
+        return self.offset() <= other.offset()
+
+    def __gt__(self, other):
+        assert (isinstance(other, Hex)), 'Can only compare Hex to Hex'
+        return self.offset() > other.offset()
+
+    def __ge__(self, other):
+        assert (isinstance(other, Hex)), 'Can only compare Hex to Hex'
+        return self.offset() >= other.offset()
 
     def __add__(self, other):
         '''Add hex to hex (vector add)'''
@@ -171,10 +198,14 @@ def hexes_at_range(hhex, dist, fmt="offset"):
         raise ValueError('format must be "offset" or "cubic"')
     hexes = []
     h_centre = Hex(hhex)
-
-    h_next = h_centre.neighbour(4) * dist
+    LOGGER.debug('centre hex = "%s"', h_centre)
+    LOGGER.debug('neighbour = "%s"', h_centre.neighbour(4))
+    h_next = h_centre + Hex(h_centre.directions[4]) * dist
     for direction in range(0, 6):
+        LOGGER.debug('direction = %d', direction)
         for j in range(0, dist):
+            LOGGER.debug('range = %d', j)
+            LOGGER.debug('appending "%s', h_next)
             if fmt == 'offset':
                 hexes.append(h_next.offset())
             else:
